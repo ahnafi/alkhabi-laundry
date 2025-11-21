@@ -115,7 +115,8 @@ class OrdersTable
                 ViewAction::make(),
                 Action::make("Bayar paket")
                     ->visible(fn(Order $record) => $record->payment_status == 'UNPAID' && $record->status == 'PICKED_UP')
-                    ->action(fn(array $data, Order $record) => resolve(TransactionService::class)->createTransaction($record, $data))
+                    ->url(fn(Order $record) => route('invoice', $record->code))
+                    ->openUrlInNewTab(false)
                     ->color("info")
                     ->icon(Heroicon::CreditCard),
                 Action::make("Konfirmasi Laundry")

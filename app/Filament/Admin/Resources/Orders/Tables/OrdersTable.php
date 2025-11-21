@@ -223,7 +223,7 @@ class OrdersTable
                 // pengisian paket
                 // pembayaran laundry
                 Action::make("Transaction")
-                    ->visible(fn(Order $record) => $record->status == "PICKED_UP" && $record->payment_status == "UNPAID")
+                    ->visible(fn(Order $record) => $record->status == "PICKED_UP" && $record->payment_status == "UNPAID" && $record->orderItems->isEmpty())
                     ->label("Buat Transaksi")
                     ->requiresConfirmation()
                     ->schema([
@@ -296,6 +296,27 @@ class OrdersTable
                     ->action(fn(array $data, Order $record) => resolve(OrderService::class)->setOrderItem($record, $data))
                     ->icon('heroicon-o-credit-card')
                     ->color("info"),
+
+                EditAction::make()
+                    ->visible(fn(Order $record) => $record->status == "PICKED_UP" && $record->payment_status == "UNPAID" && !$record->orderItems->isEmpty())
+                    ->label('Lihat Paket'),
+
+                // Action::make("Lihat Transaksi")
+                //     ->visible(fn(Order $record) => $record->status == "PICKED_UP" && $record->payment_status == "UNPAID" && !$record->orderItems->isEmpty())
+                //     ->label("Lihat Transaksi")
+                //     ->action(function (Order $record) {
+                //         // Redirect ke halaman invoice untuk melihat transaksi
+                //         return redirect()->route('invoice', $record->code);
+                //     })
+                //     ->icon('heroicon-o-eye')
+                //     ->color("primary"),
+
+                // Action::make("Bayar paket")
+                //     ->visible(fn(Order $record) => $record->status == "PICKED_UP" && $record->payment_status == "UNPAID" && !$record->orderItems->isEmpty())
+                //     ->url(fn(Order $record) => url('payment/' . $record->code))
+                //     ->openUrlInNewTab(false)
+                //     ->icon('heroicon-o-credit-card')
+                //     ->color("success"),
 
                 // proses laundry
                 Action::make("Proses Laundry")

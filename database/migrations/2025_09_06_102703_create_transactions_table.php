@@ -20,7 +20,7 @@ return new class extends Migration {
 
             // Info dari payment gateway
             $table->string('gateway_transaction_id')->nullable();
-            $table->string('payment_method', 50);
+            $table->string('payment_method', 50)->nullable();
             $table->string('payment_channel', 50)->nullable();
 
             // Nominal

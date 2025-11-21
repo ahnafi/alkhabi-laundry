@@ -11,6 +11,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Exclude payment routes dari CSRF protection
+        $middleware->validateCsrfTokens(except: [
+            'payment/callback',
+            'payment/success',
+        ]);
+
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class, // tambah ini
         ]);

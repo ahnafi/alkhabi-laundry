@@ -1,14 +1,13 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PesanController;
-use App\Http\Controllers\FeedbackController;
-use App\Http\Controllers\PembayaranController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PaymentController;
 
 
 Route::get('/', function () {
     return view('home');
 });
 
-// require __DIR__.'/auth.php';
+Route::get("/payment/{order:code}", [PaymentController::class, 'invoice'])->name('invoice');
+Route::post("/payment/success", [PaymentController::class, 'handleSuccess'])->name('payment.success');
+Route::post("/payment/callback", [PaymentController::class, 'handleCallback'])->name('payment.callback');
